@@ -360,7 +360,7 @@ FLAGS:
   --incomplete, -I		删除未完整上传的对象。
   --fake			   模拟一个假的删除操作。
   --stdin			   从STDIN中读对象列表。
-  --older-than value               删除N天前的对象（默认是0天）。
+  --older-than value               删除早于NN的对象[h | m]（默认是0天）。
 ```
 
 *示例： 删除一个对象。*

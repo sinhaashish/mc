@@ -426,8 +426,8 @@ FLAGS:
   --incomplete, -I      Remove an incomplete upload(s).
   --fake                Perform a fake remove operation.
   --stdin               Read object list from STDIN.
-  --older-than value    Remove objects older than N days. (default: 0)
-  --newer-than value    Remove objects newer than N days. (default: 0)
+  --older-than value    Remove objects older than NN[h|m]. (default: 0)
+  --newer-than value    Remove objects newer than NN[h|m]. (default: 0)
   --encrypt-key value   Encrypt/Decrypt objects (using server-side encryption)
 ENVIRONMENT VARIABLES:
     MC_ENCRYPT_KEY:     List of comma delimited prefix=secret values
@@ -463,10 +463,10 @@ Removing `play/mybucket`.
 mc rm --incomplete play/mybucket/myobject.1gig
 Removing `play/mybucket/myobject.1gig`.
 ```
-*Example: Remove object and output a message only if the object is created older than one day. Otherwise, the command stays quiet and nothing is printed out.*
+*Example: Remove object and output a message only if the object is created older than 1 day 4 hour and 30 minutes. Otherwise, the command stays quiet and nothing is printed out.*
 
 ```sh
-mc rm -r --force --older-than=1 myminio/mybucket
+mc rm -r --force --older-than=28h30m myminio/mybucket
 Removing `myminio/mybucket/dayOld1.txt`.
 Removing `myminio/mybucket/dayOld2.txt`.
 Removing `myminio/mybucket/dayOld3.txt`.

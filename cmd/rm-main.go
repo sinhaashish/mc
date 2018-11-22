@@ -31,8 +31,8 @@ import (
 	"github.com/minio/mc/pkg/probe"
 )
 
-// Day time.Duration for day.
-const Day = 24 * time.Hour
+// Hour time.Duration for an hour.
+const Hour = time.Hour
 
 // rm specific flags.
 var (
@@ -61,7 +61,7 @@ var (
 			Name:  "stdin",
 			Usage: "read object names from STDIN",
 		},
-		cli.IntFlag{
+		cli.StringFlag{
 			Name:  "older-than",
 			Usage: "remove objects older than N days",
 		},
@@ -185,7 +185,7 @@ func checkRmSyntax(ctx *cli.Context, encKeyDB map[string][]prefixSSEPair) {
 	}
 }
 
-func removeSingle(url string, isIncomplete bool, isFake bool, olderThan int, newerThan int, encKeyDB map[string][]prefixSSEPair) error {
+func removeSingle(url string, isIncomplete bool, isFake bool, olderThan, newerThan string, encKeyDB map[string][]prefixSSEPair) error {
 	targetAlias, targetURL, _ := mustExpandAlias(url)
 	clnt, pErr := newClientFromAlias(targetAlias, targetURL)
 	if pErr != nil {
@@ -202,12 +202,12 @@ func removeSingle(url string, isIncomplete bool, isFake bool, olderThan int, new
 	}
 
 	// Skip objects older than older--than parameter if specified
-	if olderThan > 0 && isOlder(content, olderThan) {
+	if isOlder(content, olderThan) {
 		return nil
 	}
 
-	// Skip objects older than older--than parameter if specified
-	if newerThan > 0 && isNewer(content, newerThan) {
+	// Skip objects newer than --newer-than parameter if specified
+	if isNewer(content, newerThan) {
 		return nil
 	}
 
@@ -237,7 +237,7 @@ func removeSingle(url string, isIncomplete bool, isFake bool, olderThan int, new
 	return nil
 }
 
-func removeRecursive(url string, isIncomplete bool, isFake bool, olderThan int, newerThan int, encKeyDB map[string][]prefixSSEPair) error {
+func removeRecursive(url string, isIncomplete bool, isFake bool, olderThan, newerThan string, encKeyDB map[string][]prefixSSEPair) error {
 	targetAlias, targetURL, _ := mustExpandAlias(url)
 	clnt, pErr := newClientFromAlias(targetAlias, targetURL)
 	if pErr != nil {
@@ -264,12 +264,12 @@ func removeRecursive(url string, isIncomplete bool, isFake bool, olderThan int, 
 		urlString := content.URL.Path
 
 		// Skip objects older than --older-than parameter if specified
-		if olderThan > 0 && isOlder(content, olderThan) {
+		if isOlder(content, olderThan) {
 			continue
 		}
 
 		// Skip objects newer than --newer-than parameter if specified
-		if newerThan > 0 && isNewer(content, newerThan) {
+		if isNewer(content, newerThan) {
 			continue
 		}
 
@@ -333,8 +333,8 @@ func mainRm(ctx *cli.Context) error {
 	isRecursive := ctx.Bool("recursive")
 	isFake := ctx.Bool("fake")
 	isStdin := ctx.Bool("stdin")
-	olderThan := ctx.Int("older-than")
-	newerThan := ctx.Int("newer-than")
+	olderThan := ctx.String("older-than")
+	newerThan := ctx.String("newer-than")
 
 	// Set color.
 	console.SetColor("Remove", color.New(color.FgGreen, color.Bold))

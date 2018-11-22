@@ -41,11 +41,11 @@ var (
 			Name:  "recursive, r",
 			Usage: "copy recursively",
 		},
-		cli.IntFlag{
+		cli.StringFlag{
 			Name:  "older-than",
 			Usage: "copy objects older than N days",
 		},
-		cli.IntFlag{
+		cli.StringFlag{
 			Name:  "newer-than",
 			Usage: "copy objects newer than N days",
 		},
@@ -217,8 +217,8 @@ func doPrepareCopyURLs(session *sessionV8, trapCh <-chan bool, cancelCopy contex
 	// Access recursive flag inside the session header.
 	isRecursive := session.Header.CommandBoolFlags["recursive"]
 
-	olderThan := session.Header.CommandIntFlags["older-than"]
-	newerThan := session.Header.CommandIntFlags["newer-than"]
+	olderThan := session.Header.CommandStringFlags["older-than"]
+	newerThan := session.Header.CommandStringFlags["newer-than"]
 	encryptKeys := session.Header.CommandStringFlags["encrypt-key"]
 	encKeyDB, err := parseAndValidateEncryptionKeys(encryptKeys)
 	fatalIf(err, "Unable to parse encryption keys.")
@@ -259,12 +259,12 @@ func doPrepareCopyURLs(session *sessionV8, trapCh <-chan bool, cancelCopy contex
 			}
 
 			// Skip objects older than --older-than parameter if specified
-			if olderThan > 0 && isOlder(cpURLs.SourceContent, olderThan) {
+			if isOlder(cpURLs.SourceContent, olderThan) {
 				continue
 			}
 
 			// Skip objects newer than --newer-than parameter if specified
-			if newerThan > 0 && isNewer(cpURLs.SourceContent, newerThan) {
+			if isNewer(cpURLs.SourceContent, newerThan) {
 				continue
 			}
 
@@ -450,8 +450,8 @@ func mainCopy(ctx *cli.Context) error {
 	console.SetColor("Copy", color.New(color.FgGreen, color.Bold))
 
 	recursive := ctx.Bool("recursive")
-	olderThan := ctx.Int("older-than")
-	newerThan := ctx.Int("newer-than")
+	olderThan := ctx.String("older-than")
+	newerThan := ctx.String("newer-than")
 	storageClass := ctx.String("storage-class")
 	sseKeys := os.Getenv("MC_ENCRYPT_KEY")
 	if key := ctx.String("encrypt-key"); key != "" {
@@ -461,8 +461,8 @@ func mainCopy(ctx *cli.Context) error {
 	session := newSessionV8()
 	session.Header.CommandType = "cp"
 	session.Header.CommandBoolFlags["recursive"] = recursive
-	session.Header.CommandIntFlags["older-than"] = olderThan
-	session.Header.CommandIntFlags["newer-than"] = newerThan
+	session.Header.CommandStringFlags["older-than"] = olderThan
+	session.Header.CommandStringFlags["newer-than"] = newerThan
 	session.Header.CommandStringFlags["storage-class"] = storageClass
 	session.Header.CommandStringFlags["encrypt-key"] = sseKeys
 

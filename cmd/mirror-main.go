@@ -186,11 +186,10 @@ type mirrorJob struct {
 	targetURL string
 
 	isFake, isRemove, isOverwrite, isWatch bool
-	olderThan, newerThan                   int
+	olderThan, newerThan                   string
 	storageClass                           string
-
-	excludeOptions []string
-	encKeyDB       map[string][]prefixSSEPair
+	excludeOptions                         []string
+	encKeyDB                               map[string][]prefixSSEPair
 }
 
 // mirrorMessage container for file mirror messages
@@ -230,7 +229,7 @@ func (mj *mirrorJob) doRemove(sURLs URLs) URLs {
 	targetWithAlias := filepath.Join(sURLs.TargetAlias, sURLs.TargetContent.URL.Path)
 
 	// Remove extraneous file/bucket on target.
-	err := probe.NewError(removeSingle(targetWithAlias, isIncomplete, mj.isFake, 0, 0, sURLs.encKeyDB))
+	err := probe.NewError(removeSingle(targetWithAlias, isIncomplete, mj.isFake, "", "", sURLs.encKeyDB))
 	return sURLs.WithError(err)
 }
 
@@ -512,12 +511,12 @@ func (mj *mirrorJob) startMirror(ctx context.Context, cancelMirror context.Cance
 
 			if sURLs.SourceContent != nil {
 				// Skip objects older than --older-than parameter if specified
-				if mj.olderThan > 0 && isOlder(sURLs.SourceContent, mj.olderThan) {
+				if isOlder(sURLs.SourceContent, mj.olderThan) {
 					continue
 				}
 
 				// Skip objects newer than --newer-than parameter if specified
-				if mj.newerThan > 0 && isNewer(sURLs.SourceContent, mj.newerThan) {
+				if isNewer(sURLs.SourceContent, mj.newerThan) {
 					continue
 				}
 
@@ -603,7 +602,7 @@ func (mj *mirrorJob) mirror(ctx context.Context, cancelMirror context.CancelFunc
 	}
 }
 
-func newMirrorJob(srcURL, dstURL string, isFake, isRemove, isOverwrite, isWatch bool, excludeOptions []string, olderThan, newerThan int, storageClass string, encKeyDB map[string][]prefixSSEPair) *mirrorJob {
+func newMirrorJob(srcURL, dstURL string, isFake, isRemove, isOverwrite, isWatch bool, excludeOptions []string, olderThan, newerThan, storageClass string, encKeyDB map[string][]prefixSSEPair) *mirrorJob {
 	mj := mirrorJob{
 		trapCh: signalTrap(os.Interrupt, syscall.SIGTERM, syscall.SIGKILL),
 		m:      new(sync.Mutex),
@@ -680,8 +679,8 @@ func runMirror(srcURL, dstURL string, ctx *cli.Context, encKeyDB map[string][]pr
 		isOverwrite,
 		ctx.Bool("watch"),
 		ctx.StringSlice("exclude"),
-		ctx.Int("older-than"),
-		ctx.Int("newer-than"),
+		ctx.String("older-than"),
+		ctx.String("newer-than"),
 		ctx.String("storage-class"),
 		encKeyDB)
 
