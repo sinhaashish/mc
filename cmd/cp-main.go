@@ -93,11 +93,11 @@ EXAMPLES:
    4. Copy a bucket recursively from aliased Amazon S3 cloud storage to local filesystem on Windows.
       $ {{.HelpName}} --recursive s3\documents\2014\ C:\Backups\2014
 
-   5. Copy files older than 7 days from Minio cloud storage to Amazon S3 cloud storage.
-      $ {{.HelpName}} --older-than 7 play/mybucket/burningman2011/ s3/mybucket/
+   5. Copy files older than 168 hours i.e. 7 days from Minio cloud storage to Amazon S3 cloud storage.
+      $ {{.HelpName}} --older-than 168 play/mybucket/burningman2011/ s3/mybucket/
 
-   6. Copy files newer than 7 days from Minio cloud storage to a local path.
-      $ {{.HelpName}} --newer-than 7 play/mybucket/burningman2011/ ~/latest/
+   6. Copy files newer than 168 hours i.e. 7 days from Minio cloud storage to a local path.
+      $ {{.HelpName}} --newer-than 168 play/mybucket/burningman2011/ ~/latest/
 
    7. Copy an object with name containing unicode characters to Amazon S3 cloud storage.
       $ {{.HelpName}} 本語 s3/andoria/

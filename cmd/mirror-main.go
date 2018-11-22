@@ -117,8 +117,8 @@ EXAMPLES:
    2. Mirror a local folder recursively to Amazon S3 cloud storage.
       $ {{.HelpName}} backup/ s3/archive
 
-   3. Only mirror files that are newer than 7 days to Amazon S3 cloud storage.
-      $ {{.HelpName}} --newer-than 7 backup/ s3/archive
+   3. Only mirror files that are newer than 7 days (168 hours) to Amazon S3 cloud storage.
+      $ {{.HelpName}} --newer-than 168 backup/ s3/archive
 
    4. Mirror a bucket from aliased Amazon S3 cloud storage to a folder on Windows.
       $ {{.HelpName}} s3\documents\2014\ C:\backup\2014
@@ -138,11 +138,11 @@ EXAMPLES:
       Exclude all .* files and *.temp files when mirroring.
       $ {{.HelpName}} --exclude ".*" --exclude "*.temp" s3/test ~/test
 
-   9. Mirror objects newer than 10 days from bucket test to a local folder.
-      $ {{.HelpName}} --newer-than=10 s3/test ~/localfolder
+   9. Mirror objects newer than 240 hours (10 days) from bucket test to a local folder.
+      $ {{.HelpName}} --newer-than=240 s3/test ~/localfolder
 
-  10. Mirror objects older than 30 days from Amazon S3 bucket test to a local folder.
-      $ {{.HelpName}} --older-than=30 s3/test ~/test
+  10. Mirror objects older than 720 hours (30 days) from Amazon S3 bucket test to a local folder.
+      $ {{.HelpName}} --older-than=720 s3/test ~/test
 
   11. Mirror server encrypted objects from Minio cloud storage to a bucket on Amazon S3 cloud storage
       $ {{.HelpName}} --encrypt-key "minio/photos=32byteslongsecretkeymustbegiven1,s3/archive=32byteslongsecretkeymustbegiven2" minio/photos/ s3/archive/

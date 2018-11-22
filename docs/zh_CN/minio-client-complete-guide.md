@@ -385,10 +385,10 @@ mc rm  --incomplete --recursive --force play/mybucket
 Removed ‘play/mybucket/mydvd.iso’.
 Removed 'play/mybucket/backup.tgz’.
 ```
-*示例： 删除一天前的对象。*
+*示例：在一天（24小时）之前删除对象。*
 
 ```sh
-mc rm --force --older-than=1 play/mybucket/oldsongs
+mc rm --force --older-than=24 play/mybucket/oldsongs
 ```
 
 <a name="share"></a>

@@ -163,13 +163,13 @@ func lineTrunc(content string, maxLen int) string {
 // isOlder returns true if the passed object is older than olderRef
 func isOlder(c *clientContent, olderRef int) bool {
 	objectAge := UTCNow().Sub(c.Time)
-	return objectAge < (time.Duration(olderRef) * Day)
+	return objectAge < (time.Duration(olderRef) * Hour)
 }
 
 // isNewer returns true if the passed object is newer than newerRef
 func isNewer(c *clientContent, newerRef int) bool {
 	objectAge := UTCNow().Sub(c.Time)
-	return objectAge > (time.Duration(newerRef) * Day)
+	return objectAge > (time.Duration(newerRef) * Hour)
 }
 
 // getLookupType returns the minio.BucketLookupType for lookup

@@ -31,8 +31,8 @@ import (
 	"github.com/minio/mc/pkg/probe"
 )
 
-// Day time.Duration for day.
-const Day = 24 * time.Hour
+// Hour time.Duration for an hour.
+const Hour = time.Hour
 
 // rm specific flags.
 var (
@@ -103,11 +103,11 @@ EXAMPLES:
    2. Remove all objects recursively from bucket 'jazz-songs' matching 'louis' prefix.
       $ {{.HelpName}} --recursive s3/jazz-songs/louis/
 
-   3. Remove all objects older than '90' days recursively from bucket 'jazz-songs' that match 'louis' prefix.
-      $ {{.HelpName}} --recursive --older-than=90 s3/jazz-songs/louis/
+   3. Remove all objects older than '90' days i.e. '2160' hours recursively from bucket 'jazz-songs' that match 'louis' prefix.
+      $ {{.HelpName}} --recursive --older-than=2160 s3/jazz-songs/louis/
 
-   4. Remove all objects newer than 7 days recursively from bucket 'pop-songs'
-      $ {{.HelpName}} --recursive --newer-than=7 s3/pop-songs/
+   4. Remove all objects newer than 7 days i.e. 168 hours recursively from bucket 'pop-songs'
+      $ {{.HelpName}} --recursive --newer-than=168 s3/pop-songs/
 
    5. Remove all objects read from STDIN.
       $ {{.HelpName}} --force --stdin
@@ -115,8 +115,8 @@ EXAMPLES:
    6. Remove all buckets and objects recursively from S3 host
       $ {{.HelpName}} --recursive --dangerous s3
 
-   7. Remove all buckets and objects older than '90' days recursively from host
-      $ {{.HelpName}} --recursive --dangerous --older-than=90 s3
+   7. Remove all buckets and objects older than '90' days i.e. '2160' hours recursively from host
+      $ {{.HelpName}} --recursive --dangerous --older-than=2160 s3
 
    8. Drop all incomplete uploads on 'jazz-songs' bucket.
       $ {{.HelpName}} --incomplete --recursive s3/jazz-songs/
