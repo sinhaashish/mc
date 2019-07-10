@@ -208,7 +208,7 @@ alias find='mc find'
 
 ### Shell autocompletion
 
-In case you are using bash or zsh, the current shell will be automatically setup to use completion feature to suggest or auto-complete your mc commands.
+In case you are using bash or zsh, the current shell will be ask for permission to install automatic auto completion when not installed yet. Add `--no-autocompletion` or set `MC_NO_AUTOCOMPLETE` environment variable to disable the automatic install of the auto completion. Auto completion feature suggests or auto-complete your mc commands.
 
 ```
 mc <TAB>

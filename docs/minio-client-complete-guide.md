@@ -247,6 +247,9 @@ Use this option to set a custom config path.
 ### Option [ --insecure]
 Skip SSL certificate verification.
 
+### Option [ --no-autocompletion]
+Disable the automatic install of the auto completion.
+
 ## 7. Commands
 
 |   |   | |
